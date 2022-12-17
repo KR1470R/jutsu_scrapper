@@ -43,8 +43,8 @@ def download_file(url, filename):
                 for chunk in r.iter_content(chunk_size=8192):
                     dl += len(chunk)
                     f.write(chunk)
-                    done = int(50 * dl / total_length)
-                    sys.stdout.write("\r[%s%s]" % ('=' * done, ' ' * (50-done)) )
+                    done = int(33 * dl / total_length) * 3
+                    sys.stdout.write("\rStatus: %d%%" % (done))
                     sys.stdout.flush()
         print("\nfinished successfully")
         return local_filename
