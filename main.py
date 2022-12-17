@@ -65,6 +65,13 @@ def download_file(url, filename):
             os.remove(filename)
         exit()
 
+def validateURL(url):
+    url_start = "https://jut.su"
+    if url.startswith(url_start):
+        return url
+    else:
+        return url_start+url
+
 resp_main = requests.get(config["link"], headers=config["headers"])
 html_main = BeautifulSoup(resp_main.text, "html.parser")
 
@@ -82,7 +89,7 @@ if (len(episodes_buttons) > 0):
                 continue
             if config["to_episode"] > 0 and episode_number > config["to_episode"]:
                 continue
-            resp_season = requests.get(el['href'], headers=config["headers"])
+            resp_season = requests.get(validateURL(el['href']), headers=config["headers"])
             html_season = BeautifulSoup(resp_season.text, "html.parser")
             filename = os.path.join(dir_name, el.text + "(" + config["quality_type"] + ").mp4")
             download_file(html_season.find("source", {"label": config["quality_type"]})["src"], filename)
