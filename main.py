@@ -75,8 +75,13 @@ def validateURL(url):
 resp_main = requests.get(config["link"], headers=config["headers"])
 html_main = BeautifulSoup(resp_main.text, "html.parser")
 
-episodes_buttons = html_main.find_all("a", {"class":"short-btn green video the_hildi"}, href=True)
+buttons_classs = ["short-btn green video the_hildi", "short-btn black video the_hildi"]
+episodes_buttons = []
+for button_class in buttons_classs:
+    episodes_buttons += html_main.find_all("a", {"class": button_class}, href=True)
+
 if (len(episodes_buttons) > 0):
+    print(f"{bcolors.OKCYAN}found {bcolors.OKGREEN}{len(episodes_buttons)} {bcolors.OKCYAN}episodes{bcolors.ENDC}")
     dir_name = os.path.join("./", [*episodes_buttons[0].stripped_strings][0]);
     if not os.path.exists(dir_name):
         os.mkdir(os.path.join(dir_name))
@@ -93,7 +98,7 @@ if (len(episodes_buttons) > 0):
             html_season = BeautifulSoup(resp_season.text, "html.parser")
             filename = os.path.join(dir_name, el.text + "(" + config["quality_type"] + ").mp4")
             download_file(html_season.find("source", {"label": config["quality_type"]})["src"], filename)
-    print(f"{bcolors.OKGREEN}%{bcolors.BOLD}episodes installed successfully!{bcolors.ENDC}")
+    print(f"{bcolors.OKGREEN}{bcolors.BOLD}episodes installed successfully!{bcolors.ENDC}")
 else:
     print(f"{bcolors.FAIL}no episodes found!{bcolors.ENDC}")
 
