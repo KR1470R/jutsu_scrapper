@@ -1,11 +1,22 @@
 from bs4 import BeautifulSoup
 import requests, re, os, sys
 
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
 def print_help_page():
-    print("Example usage:")
+    print(f"{bcolors.HEADER}Example usage:{bcolors.ENDC}")
     print("python main.py <link> <quality_type?> <from_episode?> <to_episode?>")
-    print("if quality_type not specified - default value is 360p.")
-    print("if from and to not specified - it will download all founded episodes.")
+    print(f"{bcolors.WARNING}if quality_type not specified - default value is 360p.")
+    print(f"if from and to not specified - it will download all founded episodes.{bcolors.ENDC}")
 
 def defineConfig(args = sys.argv):
     config = {
@@ -18,7 +29,7 @@ def defineConfig(args = sys.argv):
     if len(args) >= 2:
         config["link"] = args[1]
     else:
-        print("Link must be specified!")
+        print(f"{bcolors.FAIL}Link must be specified!")
         print_help_page()
         exit(1)
     if len(args) >= 3:
@@ -32,7 +43,7 @@ def defineConfig(args = sys.argv):
 config = defineConfig()
 
 def download_file(url, filename):
-    print("downloading from:", url, "to", filename);
+    print(f"{bcolors.HEADER}downloading from: {url} to {filename}{bcolors.ENDC}");
     try:
         local_filename = "./"+filename
         with requests.get(url, headers=config["headers"], stream=True) as r:
@@ -46,10 +57,10 @@ def download_file(url, filename):
                     done = int(33 * dl / total_length) * 3
                     sys.stdout.write("\rStatus: %d%%" % (done))
                     sys.stdout.flush()
-        print("\nfinished successfully")
+        print(f"\n{bcolors.OKGREEN}finished successfully{bcolors.ENDC}")
         return local_filename
     except Exception:
-        print("FATAL IN DOWNLOADING FILE", Exeption)
+        print(f"{bcolors.FAIL}FATAL IN DOWNLOADING FILE{bcolors.ENDC}", Exeption)
         if os.path.exists(filename):
             os.remove(filename)
         exit()
@@ -75,7 +86,7 @@ if (len(episodes_buttons) > 0):
             html_season = BeautifulSoup(resp_season.text, "html.parser")
             filename = os.path.join(dir_name, el.text + "(" + config["quality_type"] + ").mp4")
             download_file(html_season.find("source", {"label": config["quality_type"]})["src"], filename)
-    print("episodes installed successfully!")
+    print(f"{bcolors.OKGREEN}%{bcolors.BOLD}episodes installed successfully!{bcolors.ENDC}")
 else:
-    print("no episodes found!")
+    print(f"{bcolors.FAIL}no episodes found!{bcolors.ENDC}")
 
