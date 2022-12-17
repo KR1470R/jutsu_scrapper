@@ -43,7 +43,7 @@ def defineConfig(args = sys.argv):
 config = defineConfig()
 
 def download_file(url, filename):
-    print(f"{bcolors.HEADER}downloading from: {url} to {filename}{bcolors.ENDC}");
+    print(f"{bcolors.HEADER}downloading from: {bcolors.OKBLUE}{url} {bcolors.HEADER}to {bcolors.WARNING}{filename}{bcolors.ENDC}");
     try:
         local_filename = "./"+filename
         with requests.get(url, headers=config["headers"], stream=True) as r:
