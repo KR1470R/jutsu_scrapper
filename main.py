@@ -49,7 +49,7 @@ class JutsuScrapper:
         if to_episode:
             self.config["to_episode"] = to_episode;
 
-    def print_help_page():
+    def print_help_page(self):
         print(f"{bcolors.HEADER}Example usage:{bcolors.ENDC}");
         print("python main.py <link> <quality_type?> <from_episode?> <to_episode?>");
         print(f"{bcolors.WARNING}if quality_type not specified - default value is 360p.");
