@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-import requests, re, os, sys
+import requests, os, sys
 
 class bcolors:
     HEADER = '\033[95m';
