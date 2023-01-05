@@ -23,10 +23,6 @@ class ArgsManager:
 
 class JutsuScrapper:
     def __init__(self, url, quality_type="360p", from_episode=0, to_episode=0):
-        # to avoid str and int confict.
-        from_episode = int(from_episode);
-        to_episode = int(to_episode);
-
         self.config = {
             "link": "",
             "quality_type": "360p",
@@ -49,9 +45,9 @@ class JutsuScrapper:
                 print(f"{bcolors.WARNING}acceptable quality types:", ", ".join(self.acceptable_quality_types), bcolors.ENDC);
                 exit(1);
         if from_episode:
-            self.config["from_episode"] = from_episode;
+            self.config["from_episode"] = int(from_episode);
         if to_episode:
-            self.config["to_episode"] = to_episode;
+            self.config["to_episode"] = int(to_episode);
 
     def print_help_page(self):
         print(f"{bcolors.HEADER}Example usage:{bcolors.ENDC}");
