@@ -23,6 +23,10 @@ class ArgsManager:
 
 class JutsuScrapper:
     def __init__(self, url, quality_type="360p", from_episode=0, to_episode=0):
+        # to avoid str and int confict.
+        from_episode = int(from_episode);
+        to_episode = int(to_episode);
+
         self.config = {
             "link": "",
             "quality_type": "360p",
@@ -139,5 +143,5 @@ class JutsuScrapper:
         self.downloadEpisodes(episodes_buttons);
 
 args = ArgsManager();
-jutsu_scrapper = JutsuScrapper(args.get(1));
+jutsu_scrapper = JutsuScrapper(args.get(1), args.get(2), args.get(3), args.get(4));
 jutsu_scrapper.startParse();
